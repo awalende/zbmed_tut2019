@@ -1,0 +1,4 @@
+---
+defaultUser: ubuntu
+mtu: 1454
+registry: https://docker.bi.denbi.de:8888

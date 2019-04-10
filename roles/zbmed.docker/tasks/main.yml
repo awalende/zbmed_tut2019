@@ -1,0 +1,46 @@
+---
+
+# In this file, we describe the actual tasks in order to install docker on our targeted instance.
+# Make sure that your indentation is correct, since yml is dependent on it!!!
+
+
+# First, we need to install the docker.io package with apt.
+# See the module description of apt in order to find out, how to install software.
+# https://docs.ansible.com/ansible/latest/modules/apt_module.html
+- name: Install docker from ubuntu cloud archives
+  apt:
+
+
+
+# Afterwards, we would like to make sure, that the docker system group is present on our machine.
+# https://docs.ansible.com/ansible/latest/modules/group_module.html
+- name: Ensure that docker group exists
+  group:
+
+
+# The default ubuntu user is not able to make direct docker calls, since it's not part of the previously created docker group.
+# Add the ubuntu user to the docker group.
+# https://docs.ansible.com/ansible/latest/modules/user_module.html
+- name: Add default home user to docker group
+  user:
+
+
+# After that, docker is ready to use. However there is still some configuration needed.
+# We need to make some network tweaks and change the registry, containing runnable containers, to our registry in bielefeld.
+# For this, we have a template configuration file which needs to be transfered to the correct path on our host machine.
+# The destination path is: /etc/docker/daemon.json
+# https://docs.ansible.com/ansible/latest/modules/template_module.html
+- name: generate docker daemon configuration file
+  template:
+    src: daemon.json.j2
+    dest:
+    owner: root
+    group: root
+  notify:
+    - restart docker
+
+
+# For good use, we reload the systemd daemon
+- name: Force systemd to reread configs
+  systemd:
+    daemon_reload: yes
