@@ -90,8 +90,9 @@ After that, open the **site.yml** file and add the role **jkrue.theia-ide** dire
 
 Now finally execute the completed playbook/role with `ansible-playbook -i hosts site.yml` and control that everything gets installed.
 
-On finish, you can open Theia on your browser (if you are using one of our provided x2go instances) and point it to `http://localhost:8080`.
-
-If you are not using our x2go instances, you have to create a portforwarding to your local machine via:
+You have to create a portforwarding to your local machine via:
 
 `ssh -i <path_to_private_key> -L 8080:localhost:8080 ubuntu@<floatingip_or_dns_of_instance>`
+
+On finish, you can open Theia on your browser by pointing it to `http://localhost:8080`.
+
